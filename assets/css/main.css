@@ -1,0 +1,30 @@
+
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+.img-responsive.custom-center {
+    margin: 0 auto;
+}
+
+/* Targets the main text lines */
+.container section h1{
+    font-size: 60px;
+    cursor: pointer; /* Avoid text like cursor */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
