@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Mapa básico de bogotá con d3js</title>
+  <style>
+
+    @import url(../style.css);
+
+    .localidad {
+      fill: none;
+      stroke: #252;
+      stroke-linejoin: round;
+      stroke-width: 3
+    }
+
+    .zonapostal {
+      fill: none;
+      stroke: #fcf;
+      stroke-linejoin: round;
+      stroke-width: 1
+    }
+
+  </style>
+</head>
+<body>
+  <script src="/assets/js/vendor/d3.v3.min.js"></script>
+  <script src="/assets/js/vendor/topojson.v1.min.js"></script>
+
+  <script>
+    var width = 900;
+    var height = width*2.5;
+
+    var svg = d3.select("body").append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    var proj = d3.geo.transverseMercator()
+                      .center([0, 4.26])
+                      .rotate([74.22, 0])
+                      .scale((height * 60)/1.3)
+                      .clipAngle(90 + 1e-6)
+                      .translate([(width / 2), (height / 2)]);
+
+    var path = d3.geo.path().projection(proj);
+
+    var mymap = svg.append("svg:g")
+                    .attr("id", "mymap");
+
+    d3.json("/data/topojson/bogota-loc-zp.json", function(error, geodata) {
+      var localidades = topojson.feature(geodata, geodata.objects.localidades);
+      mymap.append("path")
+        .datum(localidades)
+        .attr("class", "localidad")
+        .attr("d", path);
+
+      var zonapostal = topojson.feature(geodata, geodata.objects.zonapostal);
+      mymap.append("path")
+        .datum(zonapostal)
+        .attr("class", "zonapostal")
+        .attr("d", path);
+    });
+  </script>
+</body>
+</html>
